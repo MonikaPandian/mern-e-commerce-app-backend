@@ -30,7 +30,11 @@ app.get('/api/config/paypal', (req, res) => {
     res.send(process.env.PAYPAL_CLIENT_ID);
 })
 
-app.use(errorHandler);
+app.use(async (req, res, next) => {
+    const error = new Error("Not Found");
+    error.status = 404;
+    next(error, errorHandler);
+})
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
